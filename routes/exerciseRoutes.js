@@ -10,7 +10,12 @@ router.get("/stats", (req,res) => {
 });
 
 router.get("/api/workouts/range", (req,res) => {
-    Workout.find({})
+    Workout.find({
+        day: {
+            $lt: new Date(),
+            $gte: new Date(new Date().setDate(new Date().getDate() - 7))
+        }
+    })
     .sort({date: -1})
     .then(dbWorkout => {
         res.json(dbWorkout);
